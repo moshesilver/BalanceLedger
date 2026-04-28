@@ -21,7 +21,6 @@ const styles = StyleSheet.create({
 		right: 0,
 		backgroundColor: 'white',
 		borderRadius: 8,
-		// maxHeight: 200, // Limit height for scrolling
 		borderWidth: 1,
 		borderColor: '#eee',
 		shadowColor: '#000',

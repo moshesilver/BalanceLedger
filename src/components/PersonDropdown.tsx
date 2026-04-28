@@ -34,10 +34,9 @@ export default function PersonDropdown({
 	value,
 	onChangeText
 }: Props) {
-	// const [searchQuery, setSearchQuery] = useState('');
 	const [modalVisible, setModalVisible] = useState(false);
 
-	// Memoize filtering so it only recalculates when searchQuery or allPeople changes
+	// Memoize filtering so it only recalculates when value or allPeople changes
 	const filteredData = useMemo(() => {
 		if (!value) return [];
 
@@ -62,9 +61,8 @@ export default function PersonDropdown({
 			onCreateNew(person); // pass the person to the parent to handle creation
 		} else {
 			onSelect(person); // pass the selected person to the parent
-			// setSearchQuery(person.name); // update the input to show the selected name
 		}
-		setModalVisible(false); // close the dropdown
+		setModalVisible(false);
 	};
 
 	return (

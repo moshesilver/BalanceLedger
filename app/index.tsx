@@ -15,7 +15,6 @@ export default function Index() {
 	const theme = useTheme();
 
 	const layout = createLayout(theme);
-	// const card = createCardStyles(theme);
 	const typography = createTypography(theme);
 	const button = createButtonStyles(theme);
 

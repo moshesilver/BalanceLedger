@@ -140,7 +140,7 @@ export default function NewOweForm() {
 					<View style={[card.sectionWide, { zIndex: 50 }]}>
 						<View style={card.container}>
 							<PersonDropdown
-								value={formData.from} // This should be the name of the person, not the ID. You'll need to map ID to name based on your people data.
+								value={formData.from}
 								onChangeText={text => setFormData(p => ({ ...p, from: text }))}
 								placeholder="Who owes money?"
 								inputRef={fromRef}
@@ -160,13 +160,10 @@ export default function NewOweForm() {
 					<View style={[card.sectionWide, { zIndex: 40 }]}>
 						<View style={card.container}>
 							<PersonDropdown
-								value={formData.to} // This should be the name of the person, not the ID. You'll need to map ID to name based on your people data.
+								value={formData.to}
 								onChangeText={text => setFormData(p => ({ ...p, to: text }))}
 								placeholder="To whom?"
-								allPeople={[
-									{ id: '1', name: 'john' },
-									{ id: '2', name: 'jane' }
-								]} // people from storage will go here
+								allPeople={[]} // people from storage will go here
 								onSelect={person =>
 									setFormData(p => ({ ...p, to: person.name }))
 								}
