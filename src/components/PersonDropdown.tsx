@@ -87,6 +87,11 @@ export default function PersonDropdown({
 					// Delay closing slightly so the 'onPress' of the list has time to fire
 					setTimeout(() => setModalVisible(false), 200);
 				}}
+				autoCapitalize="words" // Capitalizes first letter of names, but keeps it manual
+				autoCorrect={false}
+				spellCheck={false} // Removes the red squiggly lines
+				autoComplete="off" // Prevents system-level contact/address suggestions
+				textContentType="none"
 			/>
 
 			{modalVisible && (
