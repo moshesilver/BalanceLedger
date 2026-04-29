@@ -1,4 +1,5 @@
 import PersonDropdown from '@/src/components/PersonDropdown';
+import { addPerson } from '@/src/storage/personStorage';
 import {
 	createButtonStyles,
 	createCardStyles,
@@ -52,11 +53,17 @@ export default function NewOweForm() {
 	const amountRef = useRef<TextInput>(null);
 	const notesRef = useRef<TextInput>(null);
 
-	const handleAddNewPerson = (person: PersonInput) => {
-		console.log(`Create new person with name: ${person.name}`);
-		console.log(
-			`Current id is: ${person.id}. This should be updated to a real ID during actual creation.`
-		);
+	const handleAddNewPerson = async (person: PersonInput) => {
+		await addPerson(person)
+			.then(() => {
+				haptics.success();
+				Alert.alert('Success', `Added new person: ${person.name}`);
+			})
+			.catch(err => {
+				console.error(err);
+				haptics.error();
+				Alert.alert('Error', 'Failed to add new person.');
+			});
 	};
 
 	const handleAmountChange = (text: string) => {
@@ -148,7 +155,7 @@ export default function NewOweForm() {
 								onSelect={person =>
 									setFormData(p => ({ ...p, from: person.id }))
 								}
-								onCreateNew={person => handleAddNewPerson(person)}
+								onCreateNew={async person => await handleAddNewPerson(person)}
 								style={[card.inputSection, input.input]}
 								returnKeyType="next"
 								onSubmitEditing={() => toRef.current?.focus()}
@@ -167,7 +174,7 @@ export default function NewOweForm() {
 								onSelect={person =>
 									setFormData(p => ({ ...p, to: person.name }))
 								}
-								onCreateNew={person => handleAddNewPerson(person)}
+								onCreateNew={async person => await handleAddNewPerson(person)}
 								style={[card.inputSection, input.input]}
 								returnKeyType="next"
 								onSubmitEditing={() => amountRef.current?.focus()}
