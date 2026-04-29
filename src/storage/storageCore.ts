@@ -1,5 +1,5 @@
 import * as FileSystem from 'expo-file-system/legacy';
-import type { StorageFile } from './types';
+import type { StorageFile } from '../types';
 
 const FILE_PATH = FileSystem.documentDirectory + 'BalanceLedgerData.json';
 
