@@ -29,3 +29,10 @@ export type StoredPerson = {
 	// id: string;
 	name: string;
 };
+
+export type OweSummary = {
+	from: string; // person name
+	to: string; // person name
+	amountCents: number;
+	isSettled: boolean;
+};
