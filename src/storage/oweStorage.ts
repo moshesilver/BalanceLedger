@@ -64,6 +64,16 @@ export async function deleteOwe(id: string) {
 	await writeStorageFile(storageData);
 }
 
+export async function deleteOweHistory(p1: string, p2: string) {
+	const storageData = await readStorageFile();
+	storageData.owes = storageData.owes.filter(o => {
+		const isMatch =
+			(o.from === p1 && o.to === p2) || (o.from === p2 && o.to === p1);
+		return !isMatch; // filter out matches
+	});
+	await writeStorageFile(storageData);
+}
+
 export async function deleteAllOwes() {
 	const storageData = await readStorageFile();
 	storageData.owes = [];
