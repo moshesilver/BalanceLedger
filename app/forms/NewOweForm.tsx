@@ -139,7 +139,7 @@ export default function NewOweForm() {
 				from: formData.from,
 				to: formData.to,
 				amount: formData.amount,
-				notes: formData.notes?.trim()
+				notes: formData.notes ? formData.notes.trim() : undefined
 			});
 
 			haptics.success();
