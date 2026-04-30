@@ -50,17 +50,18 @@ export default function PersonDropdown({
 
 		// If if no exact match, inject the "Create New" option at the top
 		if (value.trim().length > 0 && !exactMatch) {
-			return [{ id: 'CREATE_NEW', name: value.trim() }, ...filtered];
+			return [{ /* id: 'CREATE_NEW', */ name: value.trim() }, ...filtered];
 		}
 
 		return filtered;
 	}, [value, allPeople]);
 
 	const handleSelect = (person: StoredPerson) => {
-		if (person.id === 'CREATE_NEW') {
-			onCreateNew(person); // pass the person to the parent to handle creation
-		} else {
+		const personExists = allPeople.some(p => p.name === person.name);
+		if (personExists) {
 			onSelect(person); // pass the selected person to the parent
+		} else {
+			onCreateNew(person); // pass the person to the parent to handle creation
 		}
 		setModalVisible(false);
 	};
@@ -96,21 +97,17 @@ export default function PersonDropdown({
 				<View style={styles.dropdownContainer}>
 					<View style={{ width: '100%' }}>
 						{filteredData.map(person => {
-							const isCreatedOption = person.id === 'CREATE_NEW';
+							const personExists = allPeople.some(p => p.name === person.name);
 							return (
 								<TouchableOpacity
-									key={person.id}
-									style={[styles.item, isCreatedOption && styles.createItem]}
+									key={person.name}
+									style={[styles.item, !personExists && styles.createItem]}
 									onPress={() => handleSelect(person)}
 								>
 									<Text
-										style={
-											isCreatedOption ? styles.createText : styles.itemText
-										}
+										style={!personExists ? styles.createText : styles.itemText}
 									>
-										{isCreatedOption
-											? `+ Create "${person.name}"`
-											: person.name}
+										{!personExists ? `+ Create "${person.name}"` : person.name}
 									</Text>
 								</TouchableOpacity>
 							);

@@ -1,5 +1,5 @@
 import PersonDropdown from '@/src/components/PersonDropdown';
-import { addPerson } from '@/src/storage/personStorage';
+import { addPerson, getPeople } from '@/src/storage/personStorage';
 import {
 	createButtonStyles,
 	createCardStyles,
@@ -14,7 +14,7 @@ import haptics from '@/src/utils/haptics';
 import { dollarsToCents } from '@/src/utils/money';
 import { CommonActions } from '@react-navigation/native';
 import { useNavigation } from 'expo-router';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
 	Alert,
 	Keyboard,
@@ -31,6 +31,7 @@ export default function NewOweForm() {
 	const navigation = useNavigation();
 	const insets = useSafeAreaInsets();
 
+	const [people, setPeople] = useState<PersonInput[]>([]);
 	const [submitting, setSubmitting] = useState(false);
 	const [amountText, setAmountText] = useState('');
 	const [formData, setFormData] = useState<OweInput>({
@@ -53,17 +54,34 @@ export default function NewOweForm() {
 	const amountRef = useRef<TextInput>(null);
 	const notesRef = useRef<TextInput>(null);
 
-	const handleAddNewPerson = async (person: PersonInput) => {
-		await addPerson(person)
-			.then(() => {
-				haptics.success();
-				Alert.alert('Success', `Added new person: ${person.name}`);
-			})
-			.catch(err => {
-				console.error(err);
-				haptics.error();
-				Alert.alert('Error', 'Failed to add new person.');
-			});
+	useEffect(() => {
+		(async () => setPeople(await getPeople()))();
+	}, []);
+
+	const handleAddNewPerson = (person: PersonInput, field: 'from' | 'to') => {
+		Keyboard.dismiss();
+		Alert.alert(`Create New Person: ${person.name}?`, '', [
+			{ text: 'Cancel', style: 'cancel' },
+			{
+				text: 'Add',
+				onPress: async () => {
+					try {
+						await addPerson(person);
+						haptics.success();
+
+						setPeople(await getPeople());
+
+						setFormData(prev => ({ ...prev, [field]: person.name }));
+
+						Alert.alert('Success', `Added new person: ${person.name}`);
+					} catch (err) {
+						console.error(err);
+						haptics.error();
+						Alert.alert('Error', 'Failed to add new person.');
+					}
+				}
+			}
+		]);
 	};
 
 	const handleAmountChange = (text: string) => {
@@ -108,7 +126,8 @@ export default function NewOweForm() {
 			console.log(
 				`Save owe here. Data: ${formData.from} owes ${formData.to} $${formData.amount} (${amountCents} cents). Notes: ${formData.notes}`
 			);
-			console.log('Set up real people and storage!');
+			console.log('Set up real owe storage!');
+			console.log('Also incorporate edit mode.');
 
 			haptics.success();
 
@@ -120,6 +139,7 @@ export default function NewOweForm() {
 			);
 		} catch (err) {
 			console.error(err);
+			haptics.error();
 			Alert.alert('Error', 'Failed to save.');
 		} finally {
 			setSubmitting(false);
@@ -151,11 +171,11 @@ export default function NewOweForm() {
 								onChangeText={text => setFormData(p => ({ ...p, from: text }))}
 								placeholder="Who owes money?"
 								inputRef={fromRef}
-								allPeople={[]} // people from storage will go here
+								allPeople={people}
 								onSelect={person =>
-									setFormData(p => ({ ...p, from: person.id }))
+									setFormData(p => ({ ...p, from: person.name }))
 								}
-								onCreateNew={async person => await handleAddNewPerson(person)}
+								onCreateNew={person => handleAddNewPerson(person, 'from')}
 								style={[card.inputSection, input.input]}
 								returnKeyType="next"
 								onSubmitEditing={() => toRef.current?.focus()}
@@ -170,11 +190,11 @@ export default function NewOweForm() {
 								value={formData.to}
 								onChangeText={text => setFormData(p => ({ ...p, to: text }))}
 								placeholder="To whom?"
-								allPeople={[]} // people from storage will go here
+								allPeople={people}
 								onSelect={person =>
 									setFormData(p => ({ ...p, to: person.name }))
 								}
-								onCreateNew={async person => await handleAddNewPerson(person)}
+								onCreateNew={person => handleAddNewPerson(person, 'to')}
 								style={[card.inputSection, input.input]}
 								returnKeyType="next"
 								onSubmitEditing={() => amountRef.current?.focus()}
