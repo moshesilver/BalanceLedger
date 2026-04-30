@@ -112,6 +112,12 @@ export default function NewOweForm() {
 				return;
 			}
 
+			if (formData.from === formData.to) {
+				haptics.error();
+				Alert.alert('Error', 'You cannot owe yourself.');
+				return;
+			}
+
 			const amountCents = dollarsToCents(formData.amount);
 
 			if (amountCents <= 0) {
