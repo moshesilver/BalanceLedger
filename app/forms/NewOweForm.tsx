@@ -1,4 +1,5 @@
 import PersonDropdown from '@/src/components/PersonDropdown';
+import { addOwe } from '@/src/storage/oweStorage';
 import { addPerson, getPeople } from '@/src/storage/personStorage';
 import {
 	createButtonStyles,
@@ -11,7 +12,6 @@ import {
 } from '@/src/styles/styles';
 import { OweInput, PersonInput } from '@/src/types';
 import haptics from '@/src/utils/haptics';
-import { dollarsToCents } from '@/src/utils/money';
 import { CommonActions } from '@react-navigation/native';
 import { useNavigation } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
@@ -104,11 +104,22 @@ export default function NewOweForm() {
 		setSubmitting(true);
 
 		try {
-			console.log(formData.from, formData.to, formData.amount, formData.notes);
-
 			if (!formData.from || !formData.to || !formData.amount) {
 				haptics.error();
 				Alert.alert('Error', 'Please fill out all required fields.');
+				return;
+			}
+
+			const fromExists = people.some(p => p.name === formData.from);
+			const toExists = people.some(p => p.name === formData.to);
+
+			if (!fromExists || !toExists) {
+				const missingName = !fromExists ? formData.from : formData.to;
+				haptics.error();
+				Alert.alert(
+					'Person Not Found',
+					`"${missingName}" hasn't been added to your list. Please select them from the list or tap "Create" in the dropdown.`
+				);
 				return;
 			}
 
@@ -118,22 +129,18 @@ export default function NewOweForm() {
 				return;
 			}
 
-			const amountCents = dollarsToCents(formData.amount);
-
-			if (amountCents <= 0) {
+			if (parseFloat(formData.amount) <= 0) {
 				haptics.error();
 				Alert.alert('Error', 'Amount must be greater than zero.');
 				return;
 			}
 
-			/////////////////////////////
-			// TODO: Add API call to save
-			/////////////////////////////
-			console.log(
-				`Save owe here. Data: ${formData.from} owes ${formData.to} $${formData.amount} (${amountCents} cents). Notes: ${formData.notes}`
-			);
-			console.log('Set up real owe storage!');
-			console.log('Also incorporate edit mode.');
+			await addOwe({
+				from: formData.from,
+				to: formData.to,
+				amount: formData.amount,
+				notes: formData.notes?.trim()
+			});
 
 			haptics.success();
 
