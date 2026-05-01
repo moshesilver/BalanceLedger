@@ -110,22 +110,26 @@ export default function Index() {
 						No owes yet...
 					</Text>
 				}
-				renderItem={({ item }) => (
-					<TouchableOpacity
-						style={card.container}
-						onPress={() => {
-							haptics.selection();
-							// router.push();
-						}}
-					>
-						<Text style={typography.sectionTitle}>
-							{item.from} → {item.to}
-						</Text>
-						<Text style={typography.sectionTitle}>
-							${centsToDollars(item.amountCents)}
-						</Text>
-					</TouchableOpacity>
-				)}
+				renderItem={({ index }) => {
+					const reverseIndex = oweTotals.outstanding.length - 1 - index;
+					const item = oweTotals.outstanding[reverseIndex];
+					return (
+						<TouchableOpacity
+							style={card.container}
+							onPress={() => {
+								haptics.selection();
+								// router.push();
+							}}
+						>
+							<Text style={typography.sectionTitle}>
+								{item.from} → {item.to}
+							</Text>
+							<Text style={typography.sectionTitle}>
+								${centsToDollars(item.amountCents)}
+							</Text>
+						</TouchableOpacity>
+					);
+				}}
 			/>
 
 			{/* Settled Owes */}
@@ -139,20 +143,24 @@ export default function Index() {
 							paddingHorizontal: spacing.page,
 							paddingBottom: spacing.xl
 						}}
-						renderItem={({ item }) => (
-							<TouchableOpacity
-								style={card.container}
-								onPress={() => {
-									haptics.selection();
-									// router.push();
-								}}
-							>
-								<Text style={typography.sectionTitle}>
-									{item.from} → {item.to}
-								</Text>
-								<Text style={typography.sectionTitle}>Settled</Text>
-							</TouchableOpacity>
-						)}
+						renderItem={({ index }) => {
+							const reverseIndex = oweTotals.settled.length - 1 - index;
+							const item = oweTotals.settled[reverseIndex];
+							return (
+								<TouchableOpacity
+									style={card.container}
+									onPress={() => {
+										haptics.selection();
+										// router.push();
+									}}
+								>
+									<Text style={typography.sectionTitle}>
+										{item.from} → {item.to}
+									</Text>
+									<Text style={typography.sectionTitle}>Settled</Text>
+								</TouchableOpacity>
+							);
+						}}
 					/>
 				</>
 			)}
