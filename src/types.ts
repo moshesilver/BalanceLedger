@@ -34,5 +34,4 @@ export type OweSummary = {
 	from: string; // person name
 	to: string; // person name
 	amountCents: number;
-	isSettled: boolean;
 };

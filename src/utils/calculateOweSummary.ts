@@ -26,8 +26,7 @@ export default function calculateOweSummary(owes: StoredOwe[]): OweSummary[] {
 		summaries.push({
 			from: amountCents >= 0 ? p1 : p2,
 			to: amountCents >= 0 ? p2 : p1,
-			amountCents: Math.abs(amountCents),
-			isSettled: amountCents === 0
+			amountCents: Math.abs(amountCents)
 		});
 	});
 
