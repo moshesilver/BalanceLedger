@@ -22,7 +22,7 @@ export async function addOwe(oweInput: OweInput) {
 	const { amount, ...otherData } = oweInput;
 	const owe: StoredOwe = {
 		id: Crypto.randomUUID(),
-		amountCents: dollarsToCents(amount),
+		amountCents: dollarsToCents(amount.replaceAll('$', '')), // remove here and in UI just to be safe
 		createdAt: new Date().toDateString(),
 		...otherData
 	};

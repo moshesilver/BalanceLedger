@@ -90,6 +90,11 @@ export default function NewOweForm() {
 		if (parts.length > 2) cleaned = parts[0] + '.' + parts[1];
 		if (parts[1]) cleaned = parts[0] + '.' + parts[1].slice(0, 2);
 
+		if (text !== '') {
+			cleaned = '$' + cleaned;
+			if (cleaned === '$') cleaned = '';
+		}
+
 		setAmountText(cleaned);
 		setFormData(prev => ({
 			...prev,
@@ -138,7 +143,7 @@ export default function NewOweForm() {
 			await addOwe({
 				from: formData.from,
 				to: formData.to,
-				amount: formData.amount,
+				amount: formData.amount.replaceAll('$', ''), // replace here and in backend just to be safe
 				notes: formData.notes ? formData.notes.trim() : undefined
 			});
 
