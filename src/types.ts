@@ -16,8 +16,8 @@ export type StoredOwe = {
 	to: string; // person name
 	amountCents: number; // stored as cents to avoid floating point issues, e.g. 1234 for $12.34
 	notes?: string;
-	createdAt: string; // possibly use ISO string for easier storage
-	updatedAt?: string; // possibly use ISO string for easier storage
+	createdAt: string;
+	updatedAt?: string;
 };
 
 export type PersonInput = {
@@ -30,8 +30,13 @@ export type StoredPerson = {
 	name: string;
 };
 
-export type OweSummary = {
+type OweTotal = {
 	from: string; // person name
 	to: string; // person name
 	amountCents: number;
+};
+
+export type OweSummary = {
+	outstanding: OweTotal[];
+	settled: OweTotal[];
 };

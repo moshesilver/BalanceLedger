@@ -1,6 +1,6 @@
 import { OweSummary, StoredOwe } from '../types';
 
-export default function calculateOweSummary(owes: StoredOwe[]): OweSummary[] {
+export default function calculateOweSummary(owes: StoredOwe[]): OweSummary {
 	const balances: Record<string, number> = {};
 
 	owes.forEach(owe => {
@@ -18,16 +18,23 @@ export default function calculateOweSummary(owes: StoredOwe[]): OweSummary[] {
 		}
 	});
 
-	const summaries: OweSummary[] = [];
+	const summaries: OweSummary = {
+		outstanding: [],
+		settled: []
+	};
 
 	Object.entries(balances).forEach(([key, amountCents]) => {
 		const [p1, p2] = key.split('|');
 
-		summaries.push({
-			from: amountCents >= 0 ? p1 : p2,
-			to: amountCents >= 0 ? p2 : p1,
-			amountCents: Math.abs(amountCents)
-		});
+		if (amountCents === 0) {
+			summaries.settled.push({ from: p1, to: p2, amountCents });
+		} else {
+			summaries.outstanding.push({
+				from: amountCents >= 0 ? p1 : p2,
+				to: amountCents >= 0 ? p2 : p1,
+				amountCents: Math.abs(amountCents)
+			});
+		}
 	});
 
 	return summaries;
