@@ -23,7 +23,7 @@ export async function addOwe(oweInput: OweInput) {
 	const owe: StoredOwe = {
 		id: Crypto.randomUUID(),
 		amountCents: dollarsToCents(amount.replaceAll('$', '')), // remove here and in UI just to be safe
-		createdAt: new Date().toDateString(),
+		createdAt: new Date().toISOString(),
 		...otherData
 	};
 	storageData.owes.push(owe);
@@ -43,7 +43,7 @@ export async function updateOwe(id: string, updates: Partial<OweInput>) {
 	const updatedOwe = {
 		...storageData.owes[index],
 		...otherUpdates,
-		updatedAt: new Date().toDateString()
+		updatedAt: new Date().toISOString()
 	};
 
 	if (amount !== undefined) {
