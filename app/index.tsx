@@ -118,7 +118,10 @@ export default function Index() {
 							style={card.container}
 							onPress={() => {
 								haptics.selection();
-								// router.push();
+								router.push({
+									pathname: '/OweDetails',
+									params: { p1: item.from, p2: item.to }
+								});
 							}}
 						>
 							<Text style={typography.sectionTitle}>
