@@ -1,7 +1,13 @@
 import * as FileSystem from 'expo-file-system/legacy';
 import type { StorageFile } from '../types';
 
-const FILE_PATH = FileSystem.documentDirectory + 'BalanceLedgerData.json';
+const isDev = __DEV__;
+
+const STORAGE_FILENAME = isDev
+	? 'BalanceLedgerData-dev.json'
+	: 'BalanceLedgerData.json';
+
+const FILE_PATH = FileSystem.documentDirectory + STORAGE_FILENAME;
 
 async function ensureFileExists() {
 	const info = await FileSystem.getInfoAsync(FILE_PATH);
