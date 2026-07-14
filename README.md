@@ -1,50 +1,63 @@
-# Welcome to your Expo app 👋
+# BalanceLedger
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A personal finance management application built specifically for iOS. BalanceLedger is a custom implementation tailored to my individual financial tracking needs.
 
-## Get started
+## About
 
-1. Install dependencies
+BalanceLedger is an iOS-first personal project designed with my own workflows and financial management preferences in mind. Rather than a general-purpose financial app, this is built specifically around my requirements and usage patterns. The app provides a streamlined way to track, manage, and monitor personal finances directly from an iOS device.
+
+## Current Status
+
+This project is **actively under development** and evolving based on personal needs. Features and functionality are being added incrementally as requirements emerge.
+
+## Tech Stack
+
+- **React Native** with [Expo](https://expo.dev) for iOS development
+- **TypeScript** (main codebase)
+- **Expo Router** for file-based routing
+- **React Navigation** for native iOS navigation patterns
+- **Modern React 19** with latest React Native
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js and npm
+- Xcode (for iOS simulator)
+- Expo CLI
+
+### Installation
+
+1. Install dependencies:
 
    ```bash
    npm install
    ```
 
-2. Start the app
+2. Start the development server:
 
    ```bash
    npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+3. Press `i` to open in the iOS simulator, or scan the QR code with your iPhone using Expo Go
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Available Commands
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- `npm start` - Start development server
+- `npm run ios` - Run iOS simulator directly
+- `npm run reset-project` - Reset to blank project state
+- `npm run lint` - Run ESLint
 
-## Get a fresh project
+## Project Structure
 
-When you're ready, run:
+- **app/** - application pages and forms
+- **src/** - components, helper/utility functions, styling, and storage
 
-```bash
-npm run reset-project
-```
+## Notes
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+This project is **iOS-focused** and tailored specifically for my personal use. It is not intended for general release or publication. The implementation, workflows, and feature set are custom-built around my unique financial management needs.
 
-## Learn more
+## Development
 
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Built with TypeScript throughout for type safety. The app uses Expo's latest features including the React Compiler for optimized performance.
